@@ -1,9 +1,8 @@
 ---
 - name: Install HTTPD and Start HTTPD
-  remote_user: ansible
   hosts: all
   become: root
-  ignore_errors: yes
+  become_user: root
   
   tasks:
 
