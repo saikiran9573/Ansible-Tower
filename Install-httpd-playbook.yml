@@ -6,6 +6,11 @@
   
   tasks:
 
+  - name: upgrade all packages
+    yum: 
+     name: * 
+     state: latest
+
   - name: Install HTTPD
     yum:
       name: httpd
