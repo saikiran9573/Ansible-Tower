@@ -1,7 +1,7 @@
 ---
 - name: Linux Patching
   hosts: all  
-  become: true 
+  become: root
   become_user: root
 
   tasks:
