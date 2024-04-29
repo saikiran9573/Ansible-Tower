@@ -1,0 +1,58 @@
+---
+- name: Linux Patching with Security and Kernel Updates
+  hosts: all
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: Update package list (distribution specific)
+      # This task ensures the package list is current for all distributions
+      package:
+        name: '*'
+        state: present
+        update_cache: yes  # Update cache if necessary
+
+    - name: Install security updates (distribution specific)
+      # Example for RedHat/CentOS using yum's security repo
+      yum:
+        name: '*'
+        state: latest
+        # Include security repo (adjust based on your distro)
+        repos:
+          - name: epel  # Example security repo for RHEL/CentOS
+      when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
+
+      # Example for Debian/Ubuntu using apt's security updates
+      apt:
+        name: '*'
+        state: latest
+        update_cache: yes
+        cache_valid_time: 3600  # Update cache every hour (optional)
+      when: ansible_distribution in ['Debian', 'Ubuntu']
+
+    - name: Install available updates (excluding security)
+      package:
+        name: '*'
+        exclude: security_updates  # Avoid including security updates again
+        state: latest
+
+    - name: Check for kernel updates (distribution specific)
+      command: rpm -qa --last | grep kernel  # Example for RHEL/CentOS
+      register: reboot_required
+      when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
+
+      # Example for Debian/Ubuntu using dpkg
+      apt list --installed | grep linux-image  # Modify based on your distro
+      register: reboot_required
+      when: ansible_distribution in ['Debian', 'Ubuntu']
+
+    - name: Reboot required notification (always)
+      debug:
+        msg: "A reboot is likely required due to kernel updates. Please schedule downtime!"
+      when: reboot_required.rc == 0  # Check if kernel updates were found
+
+    - name: Reboot the system (optional, manual intervention)
+      reboot:
+        post_reboot_delay: 300  # Wait 5 minutes after reboot (optional)
+      when: reboot_required.rc == 0  # Check if kernel updates were found
+        ask_reboot: yes  # Prompt user for confirmation before reboot
