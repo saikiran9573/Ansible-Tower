@@ -46,10 +46,10 @@
       # register: reboot_required
       # when: ansible_distribution in ['Debian', 'Ubuntu']
 
-    - name: Reboot required notification (always)
-      debug:
-        msg: "A reboot is likely required due to kernel updates. Please schedule downtime!"
-      when: reboot_required.rc == 0  # Check if kernel updates were found
+    # - name: Reboot required notification (always)
+    #   debug:
+    #     msg: "A reboot is likely required due to kernel updates. Please schedule downtime!"
+    #   when: reboot_required.rc == 0  # Check if kernel updates were found
 
     - name: Reboot the system (optional, manual intervention)
       reboot:
