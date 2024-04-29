@@ -17,6 +17,7 @@
       exclude: kernal*
 
   - name: Reboot required check (distribution specific)
-    command: rpm -qa --last | grep kernel  # For RHEL/CentOS
+    #command: rpm -qa --last | grep kernel  # For RHEL/CentOS
+    command: needs-restarting -r
     register: reboot_required  # Capture output in a variable
     when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
