@@ -14,7 +14,7 @@
       name: '*'
       state: latest  # For RHEL/CentOS
       security: yes
-      exclude: kernal*
+      exclude: kernel*
 
   - name: Reboot required check (distribution specific)
     #command: rpm -qa --last | grep kernel  # For RHEL/CentOS
