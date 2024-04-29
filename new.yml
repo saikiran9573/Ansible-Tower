@@ -22,13 +22,13 @@
           - name: epel  # Example security repo for RHEL/CentOS
       when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
 
-      # Example for Debian/Ubuntu using apt's security updates
-      apt:
-        name: '*'
-        state: latest
-        update_cache: yes
-        cache_valid_time: 3600  # Update cache every hour (optional)
-      when: ansible_distribution in ['Debian', 'Ubuntu']
+      # # Example for Debian/Ubuntu using apt's security updates
+      # apt:
+      #   name: '*'
+      #   state: latest
+      #   update_cache: yes
+      #   cache_valid_time: 3600  # Update cache every hour (optional)
+      # when: ansible_distribution in ['Debian', 'Ubuntu']
 
     - name: Install available updates (excluding security)
       package:
@@ -41,10 +41,10 @@
       register: reboot_required
       when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
 
-      # Example for Debian/Ubuntu using dpkg
-      apt list --installed | grep linux-image  # Modify based on your distro
-      register: reboot_required
-      when: ansible_distribution in ['Debian', 'Ubuntu']
+      # # Example for Debian/Ubuntu using dpkg
+      # apt list --installed | grep linux-image  # Modify based on your distro
+      # register: reboot_required
+      # when: ansible_distribution in ['Debian', 'Ubuntu']
 
     - name: Reboot required notification (always)
       debug:
