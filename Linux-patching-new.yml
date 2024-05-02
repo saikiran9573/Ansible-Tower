@@ -23,4 +23,6 @@
     command: needs-restarting -r
     register: reboot_required
     ignore_errors: yes
+    failed_when: False
+    changed_when: False
     when: ansible_distribution == 'Amazon'
