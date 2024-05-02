@@ -22,4 +22,5 @@
   - name: Reboot required check
     command: needs-restarting -r
     register: reboot_required
+    ignore_errors: yes
     when: ansible_distribution == 'Amazon'
