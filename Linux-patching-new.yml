@@ -1,0 +1,25 @@
+---
+- name: Amazon Linux Patching
+  hosts: all
+  become: yes
+  become_user: root
+
+  tasks:
+  - name: Check for updates
+    yum:
+      name: '*'
+      state: latest
+      update_cache: yes
+
+  - name: Install available updates
+    yum:
+      name: '*'
+      state: latest
+      update_cache: yes
+      security: yes
+      exclude: kernel*
+
+  - name: Reboot required check
+    command: needs-restarting -r
+    register: reboot_required
+    when: ansible_distribution == 'Amazon'
